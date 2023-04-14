@@ -1,0 +1,14 @@
+{
+    "name": "Backend-Social-Network",
+    "version": "1.0.1",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index",
+        "dev": "nodemon index",
+        "seed": "node utils/seed"
+    },
+    "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^7.0.2"
+  }
+}
