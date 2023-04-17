@@ -32,4 +32,23 @@ module.exports = {
       res.status(500);
     }
   },
+  // update a user
+  async updateUser(req, res) {
+    try {
+      const userData = await User.update(req.body);
+      res.json(userData);
+    } catch (err) {
+      res.status(500);
+    }
+  },
+
+  // delete a user
+  async deleteUser(req, res) {
+    try {
+      const userData = await User.delete(req.body);
+      res.json(userData);
+    } catch (err) {
+      res.status(500);
+    }
+  },
 };

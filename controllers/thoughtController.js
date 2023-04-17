@@ -33,4 +33,24 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
+  // update a thought
+  async updateThought(req, res) {
+    try {
+      const thoughtData = await Thought.update(req.body);
+      res.json(thoughtData);
+    } catch (err) {
+      res.status(500);
+    }
+  },
+
+  // delete a thought
+  async deleteThought(req, res) {
+    try {
+      const thoughtData = await Thought.delete(req.body);
+      res.json(thoughtData);
+    } catch (err) {
+      res.status(500);
+    }
+  },
 };
