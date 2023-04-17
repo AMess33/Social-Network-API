@@ -24,16 +24,20 @@ const reactionSchema = new Schema(
     },
   },
   {
-    timestamps: true,
     toJSON: {
+      virtuals: true,
       getters: true,
     },
   }
 );
 
-function dateFormat(date) {
-  const today = Date.now();
-  return today.toDateString();
-}
+reactionSchema.virtual("formatDate").get(function () {
+  return this.createdAt.toDateString();
+});
+
+// function dateFormat() {
+//   const today = Date.now();
+//   return today.toDateString();
+// }
 
 module.exports = reactionSchema;

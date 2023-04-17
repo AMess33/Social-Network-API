@@ -13,7 +13,6 @@ const thoughtSchema = new Schema(
       type: Date,
       default: Date.now,
       // set default value of current timestamp
-      get: dateFormat,
       // use getter to format timestamp
     },
     //   user that creates the thought
@@ -25,7 +24,6 @@ const thoughtSchema = new Schema(
     reactions: [reactionSchema],
   },
   {
-    timestamps: true,
     toJSON: {
       virtuals: true,
       getters: true,
@@ -38,10 +36,14 @@ thoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
 
-function dateFormat(date) {
-  const today = Date.now();
-  return today.toDateString();
-}
+thoughtSchema.virtual("formatDate").get(function () {
+  return this.createdAt.toDateString();
+});
+
+// function dateFormat() {
+//   const today = Date.now();
+//   return today.toDateString();
+// }
 const Thought = model("thoughts", thoughtSchema);
 
 module.exports = Thought;
