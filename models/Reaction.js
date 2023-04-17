@@ -19,14 +19,21 @@ const reactionSchema = new Schema(
       type: Date,
       default: Date.now,
       // set default value to current timestamp
+      get: dateFormat,
       // use getter to format timstamp
     },
   },
   {
+    timestamps: true,
     toJSON: {
       getters: true,
     },
   }
 );
+
+function dateFormat(date) {
+  const today = Date.now();
+  return today.toDateString();
+}
 
 module.exports = reactionSchema;
