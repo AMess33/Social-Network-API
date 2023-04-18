@@ -1,3 +1,4 @@
+const Thought = require("../models/Thought");
 const User = require("../models/User");
 
 module.exports = {
@@ -13,7 +14,9 @@ module.exports = {
   // get one user by id
   async getOneUser(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userId });
+      const user = await User.findOne({ _id: req.params.userId }).select(
+        "-__v"
+      );
       // if user not found throw error message
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -35,7 +38,7 @@ module.exports = {
   // update a user
   async updateUser(req, res) {
     try {
-      const userData = await User.update({ _id: req.params.userId });
+      const userData = await User.findOneAndUpdate({ _id: req.params.userId });
       res.json(userData);
     } catch (err) {
       res.status(500);
@@ -45,10 +48,14 @@ module.exports = {
   // delete a user
   async deleteUser(req, res) {
     try {
-      const userData = await User.findOneAndRemove({ _id: req.params.userId });
-      return res.json({ message: "User Deleted" });
+      const user = await User.findOneAndDelete({ _id: req.params.userId });
+      if (!user) {
+        return res.status(404).json({ message: "No User exists" });
+      }
+      await Thought.deleteMany({ _id: { $in: user.thoughts } });
+      res.json({ message: "User and their Thoughts Deleted!" });
     } catch (err) {
-      res.status(500);
+      res.status(500).json(err);
     }
   },
 };

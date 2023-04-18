@@ -13,7 +13,9 @@ module.exports = {
   // get thought by id
   async getOneThought(req, res) {
     try {
-      const thought = await Thought.findOne({ _id: req.params.thoughtId });
+      const thought = await Thought.findOne({
+        _id: req.params.thoughtId,
+      }).select("-__v");
 
       if (!thought) {
         return res.status(404).json({ message: "Thought not found" });
@@ -37,7 +39,9 @@ module.exports = {
   // update a thought
   async updateThought(req, res) {
     try {
-      const thoughtData = await Thought.update(req.body);
+      const thoughtData = await Thought.findOneAndUpdate({
+        _id: req.params.userId,
+      });
       res.json(thoughtData);
     } catch (err) {
       res.status(500);
@@ -47,8 +51,13 @@ module.exports = {
   // delete a thought
   async deleteThought(req, res) {
     try {
-      const thoughtData = await Thought.delete(req.body);
-      res.json(thoughtData);
+      const thought = await Thought.findOneAndRemove({
+        _id: req.params.thoughtId,
+      });
+      if (!thought) {
+        return res.status(404).json({ message: "No thought exists" });
+      }
+      return res.json({ message: "Thought Deleted" });
     } catch (err) {
       res.status(500);
     }
