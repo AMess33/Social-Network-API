@@ -44,6 +44,6 @@ thoughtSchema.virtual("formatDate").get(function () {
 //   const today = Date.now();
 //   return today.toDateString();
 // }
-const Thought = model("thoughts", thoughtSchema);
+const Thought = model("thought", thoughtSchema);
 
 module.exports = Thought;

@@ -19,7 +19,7 @@ const reactionSchema = new Schema(
       type: Date,
       default: Date.now,
       // set default value to current timestamp
-      get: dateFormat,
+      // get: dateFormat,
       // use getter to format timstamp
     },
   },

@@ -35,7 +35,7 @@ module.exports = {
   // update a user
   async updateUser(req, res) {
     try {
-      const userData = await User.update(req.body);
+      const userData = await User.update({ _id: req.params.userId });
       res.json(userData);
     } catch (err) {
       res.status(500);
@@ -45,8 +45,8 @@ module.exports = {
   // delete a user
   async deleteUser(req, res) {
     try {
-      const userData = await User.delete(req.body);
-      res.json(userData);
+      const userData = await User.findOneAndRemove({ _id: req.params.userId });
+      return res.json({ message: "User Deleted" });
     } catch (err) {
       res.status(500);
     }
