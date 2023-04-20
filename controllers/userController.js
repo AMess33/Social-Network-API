@@ -38,16 +38,20 @@ module.exports = {
   // update a user
   async updateUser(req, res) {
     try {
-      const userData = await User.findOneAndUpdate(
+      const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
         { $set: req.body },
         { new: true }
       );
-
+      const thought = await Thought.updateMany(
+        { _id: req.params.thoughtId },
+        { $set: { username: req.body.username } },
+        { new: true }
+      );
       if (!user) {
         res.status(404).json({ message: "No user found" });
       }
-      res.json(userData);
+      res.json(user);
     } catch (err) {
       res.status(500);
     }
