@@ -30,9 +30,15 @@ module.exports = {
   // create new thought
   async createThought(req, res) {
     try {
-      const thoughtData = await Thought.create(req.body);
-      res.json(thoughtData);
+      const thought = await Thought.create(req.body);
+      const user = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $addToSet: { thoughts: thought._id } },
+        { new: true }
+      );
+      res.json(thought);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -80,9 +86,9 @@ module.exports = {
   async addReaction(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
-        { _id: req.params.ThoughtId },
-        { $addToSet: { reactions: req.body } },
-        { runValidators: true, new: true }
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body } }
+        // { runValidators: true, new: true }
       );
 
       if (!thought) {
@@ -99,8 +105,8 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reaction: { reactionId: req.params.reactionId } } },
-        { runValidators: true, new: true }
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { new: true }
       );
 
       if (!thought) {
