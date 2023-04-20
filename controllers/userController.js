@@ -86,11 +86,16 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friend: { friendId: req.params.friendId } } },
-        { runValidators: true, new: true }
+        { $pull: { friends: req.params.friendId } },
+        { new: true }
+      );
+      const friend = await User.findOneAndUpdate(
+        { _id: req.params.friendId },
+        { $pull: { friends: req.params.userId } },
+        { new: true }
       );
 
-      if (!user) {
+      if (!user | !friend) {
         return res.status(404).json({ message: "No user found" });
       }
 
