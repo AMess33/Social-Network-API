@@ -67,8 +67,12 @@ module.exports = {
         { $addToSet: { friends: req.params.friendId } },
         { new: true }
       );
-
-      if (!user) {
+      const friend = await User.findOneAndUpdate(
+        { _id: req.params.friendId },
+        { $addToSet: { friends: req.params.userId } },
+        { new: true }
+      );
+      if (!user | !friend) {
         return res.status(404).json({ message: "No User found with that ID" });
       }
 
