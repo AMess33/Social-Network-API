@@ -41,10 +41,10 @@ module.exports = {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
         { $set: req.body },
-        { new: true }
+        { new: false }
       );
       const thought = await Thought.updateMany(
-        { _id: req.params.thoughtId },
+        { username: user.username },
         { $set: { username: req.body.username } },
         { new: true }
       );

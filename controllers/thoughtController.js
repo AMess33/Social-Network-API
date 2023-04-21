@@ -71,8 +71,8 @@ module.exports = {
         return res.status(404).json({ message: "No thought exists" });
       }
       const user = await User.findOneAndUpdate(
-        { thoughts: req.params.userId },
-        { $pull: { thoughts: req.params.userId } },
+        { thoughts: req.params.thoughtId },
+        { $pull: { thoughts: req.params.thoughtId } },
         { new: true }
       );
 
